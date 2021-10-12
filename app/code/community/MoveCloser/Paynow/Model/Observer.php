@@ -34,6 +34,8 @@ class MoveCloser_Paynow_Model_Observer
 
             if (version_compare($currentVersion, $newestVersion, '>')) {
                 $session->addNotice($this->_t('New MoveCloser_Paynow plugin version available. Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
+            } else {
+                $session->addSuccess($this->_t('Installed version of MoveCloser_Paynow is up to date (%s)', $currentVersion));
             }
         } catch (\Exception $e) {
             $session->addError($this->_t('Something went wrong during MoveCloser_Paynow version lookup. Details: %s', $e->getMessage()));
