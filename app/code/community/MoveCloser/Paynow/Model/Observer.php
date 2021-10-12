@@ -23,7 +23,7 @@ class MoveCloser_Paynow_Model_Observer
             curl_setopt($ch, CURLOPT_USERAGENT, 'movecloser/paynow-magento-ext');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             // @fixme: hardcoded url?
-            curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/laravel/laravel/tag');
+            curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/movecloser/MoveCloser_Paynow/tags');
             $tagsJson = curl_exec($ch);
             curl_close($ch);
 
