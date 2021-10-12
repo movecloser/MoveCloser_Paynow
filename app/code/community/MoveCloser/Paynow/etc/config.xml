@@ -2,7 +2,7 @@
 <config>
     <modules>
         <MoveCloser_Paynow>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </MoveCloser_Paynow>
     </modules>
     <global>
@@ -16,11 +16,6 @@
                 </methodName>
             </paynow_payment_method>
         </fieldsets>
-        <helpers>
-            <paynow>
-                <class>MoveCloser_Paynow_Helper</class>
-            </paynow>
-        </helpers>
         <blocks>
             <paynow>
                 <class>MoveCloser_Paynow_Block</class>
