@@ -1,0 +1,34 @@
+<?php
+/**
+ * This file is responsible for rendering additional information under paynow method.
+ * Displays list of available paynow payment methods if applicable.
+ *
+ * @package MoveCloser_Paynow
+ */
+
+$checkSet = false;
+?>
+
+<div class="form-list" id="payment_form_<?= $this->getMethodCode() ?>" style="display:none;">
+    <?php if (!$this->isLevel0Enabled()): ?>
+        <span><?= $this->__('You will be redirected to paynow after submitting the order.') ?></span>
+    <?php else: ?>
+        <div class="available-paynow-methods">
+            <?php foreach ($this->paymentMethods() as $method): ?>
+                <div class="paynow-method <?= $method->isEnabled() ? '' : 'disabled' ?>">
+                    <?php if ($method->isEnabled()): ?>
+                        <input type="radio" id="paynow-method-<?= $method->getId() ?>" value="<?= $method->getId() ?>"
+                               name="payment[payment_method_id]"
+                               aria-label="<?= $method->getName() ?>" <?php if ($checkSet === false) {
+                            echo 'checked';
+                            $checkSet = true;
+                        } ?>>
+                    <?php endif; ?>
+                    <div class="paynow-method-inner">
+                        <img src="<?= $method->getImage(); ?>" alt='<?= $method->getName() ?>'>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>

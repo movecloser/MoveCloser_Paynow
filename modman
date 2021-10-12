@@ -1,0 +1,11 @@
+# Paynow plugin
+app/etc/modules/MoveCloser_Paynow.xml                               app/etc/modules/MoveCloser_Paynow.xml
+
+lib/*                                                               lib/
+app/locale/pl_PL/*                                                  app/locale/pl_PL/
+app/code/community/MoveCloser/*                                     app/code/community/MoveCloser/
+
+app/design/frontend/base/default/template/movecloser_paynow/*       app/design/frontend/base/default/template/movecloser_paynow/
+
+skin/frontend/base/default/css/movecloser_paynow                    skin/frontend/base/default/css/movecloser_paynow
+skin/frontend/base/default/images/movecloser_paynow                 skin/frontend/base/default/images/movecloser_paynow

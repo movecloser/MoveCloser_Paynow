@@ -1,0 +1,21 @@
+<?php
+/**
+ * This file is a modified copy of the default Magento checkout failure template.
+ * Use it as an example on how to integrate paynow urls in your theme.
+ *
+ * @package MoveCloser_Paynow
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('An error occurred in the process of payment') ?></h1>
+</div>
+<?php if ($this->getRealOrderId()) : ?><p><?php echo $this->__('Order #') . $this->getRealOrderId() ?></p><?php endif ?>
+<?php if ($error = $this->getErrorMessage()) : ?><p><?php echo $error ?></p><?php endif ?>
+<p><?php echo $this->__('Click <a href="%s">here</a> to continue shopping.', Mage::helper('core')->quoteEscape($this->getContinueShoppingUrl())) ?></p>
+<div style="margin-top: 1rem; margin-left: 1rem">
+    <?php foreach ($this->getLinks() as $title => $link): ?>
+        <div style="padding: 0.5rem">
+            <strong><?= $title ?>:</strong><span style="margin-left: 0.25rem"><?= $link ?></span>
+        </div>
+    <?php endforeach; ?>
+</div>
