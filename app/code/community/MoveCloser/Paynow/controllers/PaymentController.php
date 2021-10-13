@@ -41,7 +41,7 @@ class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Act
     public function completeAction()
     {
         try {
-            $this->getSession()->getQuote()->setIsActive(false)->save();
+            $this->getCheckoutSession()->getQuote()->setIsActive(false)->save();
         } catch (\Exception $e) {
             Mage::logException($e);
         }
@@ -62,7 +62,7 @@ class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Act
     public function newAction()
     {
         try {
-            $order = $this->getOrder()->loadByIncrementId($this->getSession()->getLastRealOrderId());
+            $order = $this->getOrder()->loadByIncrementId($this->getCheckoutSession()->getLastRealOrderId());
 
             if (!$order->getId()) {
                 Mage::throwException($this->__('Order not provided'));
@@ -119,6 +119,16 @@ class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Act
 
             $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
         }
+    }
+
+    /**
+     * Get Magento session singleton.
+     *
+     * @return Mage_Core_Model_Session
+     */
+    protected function getCheckoutSession()
+    {
+        return Mage::getSingleton('checkout/session');
     }
 
     /**
