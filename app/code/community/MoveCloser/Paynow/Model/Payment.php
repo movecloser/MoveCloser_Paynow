@@ -780,8 +780,8 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
         $order = Mage::getModel('sales/order')->loadByIncrementId($notification['externalId']);
         $payment = $order->getPayment();
-        $currentStatus = $statuses[$payment->getAdditionalInformation('paynow_status')] ?? 0;
-        $newStatus = $statuses[$notification['status']] ?? 0;
+        $currentStatus = isset($statuses[$payment->getAdditionalInformation('paynow_status')]) ? $statuses[$payment->getAdditionalInformation('paynow_status')] : 0;
+        $newStatus = isset($statuses[$notification['status']]) ? $statuses[$notification['status']] : 0;
 
         // Current status is "more important" than incoming one.
         // It is possible for notifications to arrive out of order.
