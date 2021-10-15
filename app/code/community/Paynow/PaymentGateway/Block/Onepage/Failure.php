@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_Block_Onepage_Failure extends Mage_Core_Block_Template
+class Paynow_PaymentGateway_Block_Onepage_Failure extends Mage_Core_Block_Template
 {
     /**
      * Continue shopping URL
@@ -35,7 +35,7 @@ class MoveCloser_Paynow_Block_Onepage_Failure extends Mage_Core_Block_Template
         $order = Mage::getModel('sales/order')->loadByIncrementId($this->getRealOrderId());
 
         if (floatval($order->getBaseTotalDue()) > 0 && !$order->isCanceled()) {
-            $status = $order->getPayment()->getAdditionalInformation('paynow_status');
+            $status = $order->getPayment()->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_PAYNOW_STATUS);
 
             if (in_array($status, $this->getPaymentModel()->getRetryOrCancelableStatuses())) {
                 return [
@@ -66,7 +66,7 @@ class MoveCloser_Paynow_Block_Onepage_Failure extends Mage_Core_Block_Template
      */
     public function setTemplate($template)
     {
-        if (strpos($template, 'movecloser_paynow') === false) {
+        if (strpos($template, 'paynow_paymentgateway') === false) {
             return $this;
         }
 
@@ -81,7 +81,7 @@ class MoveCloser_Paynow_Block_Onepage_Failure extends Mage_Core_Block_Template
     {
         parent::_construct();
 
-        $this->setTemplate('movecloser_paynow/checkout/failure.phtml');
+        $this->setTemplate('paynow_paymentgateway/checkout/failure.phtml');
     }
 
     /**
@@ -136,7 +136,7 @@ class MoveCloser_Paynow_Block_Onepage_Failure extends Mage_Core_Block_Template
     /**
      * Get Payment Model instance.
      *
-     * @return MoveCloser_Paynow_Model_Payment
+     * @return Paynow_PaymentGateway_Model_Payment
      */
     protected function getPaymentModel()
     {

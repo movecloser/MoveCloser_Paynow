@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_Block_Form_Payment extends Mage_Payment_Block_Form
+class Paynow_PaymentGateway_Block_Form_Payment extends Mage_Payment_Block_Form
 {
     /**
      * Check if "level 0" integration is enabled.
@@ -49,7 +49,7 @@ class MoveCloser_Paynow_Block_Form_Payment extends Mage_Payment_Block_Form
     protected function _prepareLayout()
     {
         if ($head = $this->getLayout()->getBlock('head')) {
-            $head->addCss('css/movecloser_paynow/paynow.css');
+            $head->addCss('css/paynow_paymentgateway/paynow.css');
         }
 
         return parent::_prepareLayout();
@@ -58,7 +58,7 @@ class MoveCloser_Paynow_Block_Form_Payment extends Mage_Payment_Block_Form
     /**
      * Get Payment Model instance.
      *
-     * @return MoveCloser_Paynow_Model_Payment
+     * @return Paynow_PaymentGateway_Model_Payment
      */
     protected function getPaymentModel()
     {
@@ -78,7 +78,7 @@ class MoveCloser_Paynow_Block_Form_Payment extends Mage_Payment_Block_Form
             $this->setMethodLabelAfterHtml('<img src="' . $this->getSkinUrl($this->getPaymentModel()->getLogoPath()) . '" alt="' . $this->getPaymentModel()->getTitle() . '" class="mainPaynowLogo"/>');
             $this->setMethodTitle($this->getPaymentModel()->getTitle());
 
-            $this->setTemplate('movecloser_paynow/form/payment.phtml');
+            $this->setTemplate('paynow_paymentgateway/form/payment.phtml');
         }
     }
 }

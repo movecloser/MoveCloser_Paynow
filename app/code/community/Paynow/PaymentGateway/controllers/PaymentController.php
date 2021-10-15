@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Action
+class Paynow_PaymentGateway_PaymentController extends Mage_Core_Controller_Front_Action
 {
     /**
      * Cancel order upon customer request.
@@ -105,7 +105,7 @@ class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Act
         try {
             $order = $this->validateIncomingOrder();
 
-            if (!in_array($order->getPayment()->getAdditionalInformation('paynow_status'), $this->getPaymentModel()->getRetryOrCancelableStatuses())) {
+            if (!in_array($order->getPayment()->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_PAYNOW_STATUS), $this->getPaymentModel()->getRetryOrCancelableStatuses())) {
                 Mage::throwException($this->__('New transaction cannot be created'));
             }
 
@@ -154,7 +154,7 @@ class MoveCloser_Paynow_PaymentController extends Mage_Core_Controller_Front_Act
     /**
      * Get Payment Model instance.
      *
-     * @return MoveCloser_Paynow_Model_Payment
+     * @return Paynow_PaymentGateway_Model_Payment
      */
     protected function getPaymentModel()
     {

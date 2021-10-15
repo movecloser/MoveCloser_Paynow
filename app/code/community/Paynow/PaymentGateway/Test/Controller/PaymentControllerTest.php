@@ -1,6 +1,6 @@
 <?php
 
-class MoveCloser_Paynow_Test_Controller_PaymentControllerTest extends EcomDev_PHPUnit_Test_Case_Controller
+class Paynow_PaymentGateway_Test_Controller_PaymentControllerTest extends EcomDev_PHPUnit_Test_Case_Controller
 {
     public function testCancelActionRedirectsToCartOnFailure()
     {

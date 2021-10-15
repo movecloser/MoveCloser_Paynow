@@ -12,22 +12,30 @@ use Paynow\Notification;
 use Paynow\Service\Payment;
 use Paynow\Service\Refund;
 use Paynow\Service\ShopConfiguration;
+use Paynow\Model\Payment\Status as PaymentStatus;
+use Paynow\Model\Refund\Status as RefundStatus;
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
+class Paynow_PaymentGateway_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
-    const PAYMENT_STATUS_NEW = 'NEW';
-    const PAYMENT_STATUS_PENDING = 'PENDING';
-    const PAYMENT_STATUS_ERROR = 'ERROR';
-    const PAYMENT_STATUS_REJECTED = 'REJECTED';
-    const PAYMENT_STATUS_CONFIRMED = 'CONFIRMED';
-    const PAYMENT_STATUS_EXPIRED = 'EXPIRED';
+    const PAYMENT_AI_REDIRECT_URL = 'paynow_redirect_url';
+    const PAYMENT_AI_PAYMENT_ID = 'paynow_payment_id';
+    const PAYMENT_AI_PAYNOW_STATUS = 'paynow_status';
 
-    const REFUND_STATUS_NEW = 'NEW';
-    const REFUND_STATUS_PENDING = 'PENDING';
-    const REFUND_STATUS_SUCCESSFUL = 'SUCCESSFUL';
+    const REFUND_AI_REFUND_ID = 'paynow_refund_id';
+
+    const PAYMENT_STATUS_NEW = PaymentStatus::STATUS_NEW;
+    const PAYMENT_STATUS_PENDING = PaymentStatus::STATUS_PENDING;
+    const PAYMENT_STATUS_ERROR = PaymentStatus::STATUS_ERROR;
+    const PAYMENT_STATUS_REJECTED = PaymentStatus::STATUS_REJECTED;
+    const PAYMENT_STATUS_CONFIRMED = PaymentStatus::STATUS_CONFIRMED;
+    const PAYMENT_STATUS_EXPIRED = PaymentStatus::STATUS_EXPIRED;
+
+    const REFUND_STATUS_NEW = RefundStatus::NEW;
+    const REFUND_STATUS_PENDING = RefundStatus::PENDING;
+    const REFUND_STATUS_SUCCESSFUL = RefundStatus::SUCCESSFUL;
 
     protected $_code = 'paynow';
     protected $_formBlockType = 'paynow/form_payment';
@@ -114,9 +122,9 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
             ],
         ];
 
-        $vt = $this->validityTime();
-        if ($vt > 0) {
-            $paymentData['validityTime'] = $vt;
+        $validityTime = $this->validityTime();
+        if ($validityTime > 0) {
+            $paymentData['validityTime'] = $validityTime;
         }
 
         $phone = $billingAddress->getTelephone();
@@ -164,9 +172,9 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
         $result = $this->getPaymentService()->authorize($paymentData, $this->getOrderIdempotencyKey($order));
 
-        $paymentInstance->setAdditionalInformation('redirect_url', $result->getRedirectUrl());
-        $paymentInstance->setAdditionalInformation('payment_id', $result->getPaymentId());
-        $paymentInstance->setAdditionalInformation('paynow_status', $result->getStatus());
+        $paymentInstance->setAdditionalInformation(self::PAYMENT_AI_REDIRECT_URL, $result->getRedirectUrl());
+        $paymentInstance->setAdditionalInformation(self::PAYMENT_AI_PAYMENT_ID, $result->getPaymentId());
+        $paymentInstance->setAdditionalInformation(self::PAYMENT_AI_PAYNOW_STATUS, $result->getStatus());
 
         $paymentInstance->save();
 
@@ -246,7 +254,7 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
      */
     public function getLogoPath()
     {
-        return 'images/movecloser_paynow/paynow_logo_black.png';
+        return 'images/paynow_paymentgateway/paynow_logo_black.png';
     }
 
     /**
@@ -279,13 +287,13 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
     }
 
     /**
-     * Get MoveCloser_Paynow plugin version.
+     * Get Paynow_PaymentGateway plugin version.
      *
      * @return string
      */
     public function getPluginVersion()
     {
-        return Mage::getConfig()->getNode('modules/MoveCloser_Paynow/version');
+        return Mage::getConfig()->getNode('modules/Paynow_PaymentGateway/version');
     }
 
     /**
@@ -421,7 +429,7 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
             if (in_array($status->getStatus(), $this->getRefundRequestSuccessfullStatuses())) {
                 $order
                     ->getPayment()
-                    ->setAdditionalInformation('refund_id', $status->getRefundId())
+                    ->setAdditionalInformation(self::REFUND_AI_REFUND_ID, $status->getRefundId())
                     ->save();
 
                 $order
@@ -780,7 +788,7 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
 
         $order = Mage::getModel('sales/order')->loadByIncrementId($notification['externalId']);
         $payment = $order->getPayment();
-        $currentStatus = isset($statuses[$payment->getAdditionalInformation('paynow_status')]) ? $statuses[$payment->getAdditionalInformation('paynow_status')] : 0;
+        $currentStatus = isset($statuses[$payment->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_PAYNOW_STATUS)]) ? $statuses[$payment->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_PAYNOW_STATUS)] : 0;
         $newStatus = isset($statuses[$notification['status']]) ? $statuses[$notification['status']] : 0;
 
         // Current status is "more important" than incoming one.
@@ -807,7 +815,7 @@ class MoveCloser_Paynow_Model_Payment extends Mage_Payment_Model_Method_Abstract
         }
 
         $payment
-            ->setAdditionalInformation('paynow_status', $notification['status'])
+            ->setAdditionalInformation(self::PAYMENT_AI_PAYNOW_STATUS, $notification['status'])
             ->save();
     }
 }

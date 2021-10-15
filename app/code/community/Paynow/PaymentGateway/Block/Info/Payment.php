@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_Block_Info_Payment extends Mage_Payment_Block_Info
+class Paynow_PaymentGateway_Block_Info_Payment extends Mage_Payment_Block_Info
 {
     /**
      * Internal constructor, that is called from real constructor.
@@ -13,7 +13,7 @@ class MoveCloser_Paynow_Block_Info_Payment extends Mage_Payment_Block_Info
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('movecloser_paynow/info/default.phtml');
+        $this->setTemplate('paynow_paymentgateway/info/default.phtml');
     }
 
     /**
@@ -81,15 +81,15 @@ class MoveCloser_Paynow_Block_Info_Payment extends Mage_Payment_Block_Info
         }
 
         // Append information about refund ID.
-        if (!empty($refundId = $info->getAdditionalInformation('refund_id'))) {
+        if (!empty($refundId = $info->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::REFUND_AI_REFUND_ID))) {
             $transport->addData([
                 $this->_t('Refund ID') => $refundId,
             ]);
         }
 
         // Add payment-related URLs to order information
-        if (!empty($redirectUri = $info->getAdditionalInformation('redirect_url')) && floatval($order->getBaseTotalDue()) > 0 && !$order->isCanceled()) {
-            $status = $info->getAdditionalInformation('paynow_status');
+        if (!empty($redirectUri = $info->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_REDIRECT_URL)) && floatval($order->getBaseTotalDue()) > 0 && !$order->isCanceled()) {
+            $status = $info->getAdditionalInformation(Paynow_PaymentGateway_Model_Payment::PAYMENT_AI_PAYNOW_STATUS);
 
             if (in_array($status, $this->getPaymentModel()->getFinishableStatuses())) {
                 $transport->addData([
@@ -144,7 +144,7 @@ class MoveCloser_Paynow_Block_Info_Payment extends Mage_Payment_Block_Info
     /**
      * Get Payment Model instance.
      *
-     * @return MoveCloser_Paynow_Model_Payment
+     * @return Paynow_PaymentGateway_Model_Payment
      */
     protected function getPaymentModel()
     {

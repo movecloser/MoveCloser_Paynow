@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package MoveCloser_Paynow
+ * @package Paynow_PaymentGateway
  */
-class MoveCloser_Paynow_Model_Observer
+class Paynow_PaymentGateway_Model_Observer
 {
     /**
      * Check for new paynow version after admin login.
@@ -20,7 +20,7 @@ class MoveCloser_Paynow_Model_Observer
             $currentVersion = $this->getPaymentModel()->getPluginVersion();
 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_USERAGENT, 'movecloser/paynow-magento-ext');
+            curl_setopt($ch, CURLOPT_USERAGENT, 'paynow/paymentgateway-magento-ext');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             // @fixme: hardcoded url?
             curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/movecloser/MoveCloser_Paynow/tags');
@@ -33,12 +33,12 @@ class MoveCloser_Paynow_Model_Observer
             }
 
             if (version_compare($currentVersion, $newestVersion, '<')) {
-                $session->addNotice($this->_t('New MoveCloser_Paynow plugin version available. Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
+                $session->addNotice($this->_t('New Paynow_PaymentGateway plugin version available. Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
             } else {
-                $session->addSuccess($this->_t('Installed version of MoveCloser_Paynow is up to date (%s)', $currentVersion));
+                $session->addSuccess($this->_t('Installed version of Paynow_PaymentGateway is up to date (%s)', $currentVersion));
             }
         } catch (\Exception $e) {
-            $session->addError($this->_t('Something went wrong during MoveCloser_Paynow version lookup. Details: %s', $e->getMessage()));
+            $session->addError($this->_t('Something went wrong during Paynow_PaymentGateway version lookup. Details: %s', $e->getMessage()));
         }
     }
 
@@ -73,7 +73,7 @@ class MoveCloser_Paynow_Model_Observer
     /**
      * Get Payment Model instance.
      *
-     * @return MoveCloser_Paynow_Model_Payment
+     * @return Paynow_PaymentGateway_Model_Payment
      */
     protected function getPaymentModel()
     {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <modules>
-        <MoveCloser_Paynow>
+        <Paynow_PaymentGateway>
             <version>1.1.7</version>
-        </MoveCloser_Paynow>
+        </Paynow_PaymentGateway>
     </modules>
     <global>
         <fieldsets>
@@ -18,17 +18,17 @@
         </fieldsets>
         <blocks>
             <paynow>
-                <class>MoveCloser_Paynow_Block</class>
+                <class>Paynow_PaymentGateway_Block</class>
             </paynow>
             <checkout>
                 <rewrite>
-                    <onepage_failure>MoveCloser_Paynow_Block_Onepage_Failure</onepage_failure>
+                    <onepage_failure>Paynow_PaymentGateway_Block_Onepage_Failure</onepage_failure>
                 </rewrite>
             </checkout>
         </blocks>
         <models>
             <paynow>
-                <class>MoveCloser_Paynow_Model</class>
+                <class>Paynow_PaymentGateway_Model</class>
             </paynow>
         </models>
         <payment>
@@ -72,11 +72,11 @@
         </acl>
         <translate>
             <modules>
-                <MoveCloser_Paynow>
+                <Paynow_PaymentGateway>
                     <files>
-                        <additional_file>MoveCloser_Paynow.csv</additional_file>
+                        <additional_file>Paynow_PaymentGateway.csv</additional_file>
                     </files>
-                </MoveCloser_Paynow>
+                </Paynow_PaymentGateway>
             </modules>
         </translate>
         <events>
@@ -105,18 +105,18 @@
             <paynow>
                 <use>standard</use>
                 <args>
-                    <module>MoveCloser_Paynow</module>
+                    <module>Paynow_PaymentGateway</module>
                     <frontName>paynow</frontName>
                 </args>
             </paynow>
         </routers>
         <translate>
             <modules>
-                <MoveCloser_Paynow>
+                <Paynow_PaymentGateway>
                     <files>
-                        <default>MoveCloser_Paynow.csv</default>
+                        <default>Paynow_PaymentGateway.csv</default>
                     </files>
-                </MoveCloser_Paynow>
+                </Paynow_PaymentGateway>
             </modules>
         </translate>
     </frontend>
