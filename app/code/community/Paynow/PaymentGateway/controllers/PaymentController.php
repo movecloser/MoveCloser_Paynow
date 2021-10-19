@@ -75,7 +75,12 @@ class Paynow_PaymentGateway_PaymentController extends Mage_Core_Controller_Front
             $this->_redirectUrl($result->getRedirectUrl());
         } catch (\Exception $e) {
             Mage::logException($e);
-            $this->getSession()->addError($e->getMessage());
+
+            if (method_exists($e, 'getErrors') && count($e->getErrors()) > 0) {
+                $this->getSession()->addError($this->_t($e->getErrors()[0]->getType()));
+            } else {
+                $this->getSession()->addError($this->_t($e->getMessage()));
+            }
 
             $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
         }
@@ -115,7 +120,12 @@ class Paynow_PaymentGateway_PaymentController extends Mage_Core_Controller_Front
             $this->_redirectUrl($result->getRedirectUrl());
         } catch (Exception $e) {
             Mage::logException($e);
-            $this->getSession()->addError($e->getMessage());
+
+            if (method_exists($e, 'getErrors') && count($e->getErrors()) > 0) {
+                $this->getSession()->addError($this->_t($e->getErrors()[0]->getType()));
+            } else {
+                $this->getSession()->addError($this->_t($e->getMessage()));
+            }
 
             $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
         }
