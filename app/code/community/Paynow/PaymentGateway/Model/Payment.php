@@ -420,21 +420,35 @@ class Paynow_PaymentGateway_Model_Payment extends Mage_Payment_Model_Method_Abst
         $paymentId = $order->getPayment()->getLastTransId();
 
         try {
-            $status = $this->getRefundService()
+            $refund = $this->getRefundService()
                 ->create(
                     $paymentId,
                     hash_hmac('md5', $paymentId, $this->getApiSignature()), round($amount * 100)
                 );
 
-            if (in_array($status->getStatus(), $this->getRefundRequestSuccessfullStatuses())) {
+            try {
+                $refundStatus = $refund->getStatus();
+            } catch (TypeError $err) {
+                $refundStatus = null;
+
+                Mage::throwException(
+                    $this->_t(
+                        'paynow refund - amount: %s, status: %s',
+                        $amount,
+                        $this->_t('Try again later')
+                    )
+                );
+            }
+
+            if (in_array($refundStatus, $this->getRefundRequestSuccessfullStatuses())) {
                 $order
                     ->getPayment()
-                    ->setAdditionalInformation(self::REFUND_AI_REFUND_ID, $status->getRefundId())
+                    ->setAdditionalInformation(self::REFUND_AI_REFUND_ID, $refund->getRefundId())
                     ->save();
 
                 $order
                     ->addStatusHistoryComment(
-                        $this->_t('paynow refund - amount: %s, status: %s', $amount, $status->getStatus())
+                        $this->_t('paynow refund - amount: %s, status: %s', $amount, $refundStatus)
                     )
                     ->save();
 

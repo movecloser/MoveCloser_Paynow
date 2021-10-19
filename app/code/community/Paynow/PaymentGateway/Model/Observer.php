@@ -33,7 +33,7 @@ class Paynow_PaymentGateway_Model_Observer
             }
 
             if (version_compare($currentVersion, $newestVersion, '<')) {
-                $session->addNotice($this->_t('New Paynow_PaymentGateway plugin version available. Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
+                $this->createNewVersionNotice($currentVersion, $newestVersion);
             } else {
                 $session->addSuccess($this->_t('Installed version of Paynow_PaymentGateway is up to date (%s)', $currentVersion));
             }
@@ -68,6 +68,25 @@ class Paynow_PaymentGateway_Model_Observer
     protected function _t($content, ...$args)
     {
         return Mage::helper('payment')->__($content, ...$args);
+    }
+
+    /**
+     * Create a pop-up in admin panel.
+     *
+     * @param string $currentVersion
+     * @param string $newestVersion
+     */
+    protected function createNewVersionNotice($currentVersion, $newestVersion)
+    {
+        $message = Mage::getModel('adminnotification/inbox');
+        if ($message) {
+            $message->setDateAdded(date("c", time()));
+            $message->setTitle($this->_t('New Paynow_PaymentGateway plugin version available'));
+            $message->setDescription($this->_t('Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
+            $message->setUrl('https://github.com/movecloser/MoveCloser_Paynow');
+            $message->setSeverity(Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE);
+            $message->save();
+        }
     }
 
     /**
