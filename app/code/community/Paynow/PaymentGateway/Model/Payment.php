@@ -423,7 +423,8 @@ class Paynow_PaymentGateway_Model_Payment extends Mage_Payment_Model_Method_Abst
             $refund = $this->getRefundService()
                 ->create(
                     $paymentId,
-                    hash_hmac('md5', $paymentId, $this->getApiSignature()), round($amount * 100)
+                    hash_hmac('md5', $paymentId . floor(time() / 60), $this->getApiSignature()),
+                    round($amount * 100)
                 );
 
             try {
