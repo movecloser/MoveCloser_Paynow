@@ -23,7 +23,7 @@ class Paynow_PaymentGateway_Model_Observer
             curl_setopt($ch, CURLOPT_USERAGENT, 'paynow/paymentgateway-magento-ext');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             // @fixme: hardcoded url?
-            curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/movecloser/MoveCloser_Paynow/tags');
+            curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/pay-now/paynow-magento/tags');
             $tagsJson = curl_exec($ch);
             curl_close($ch);
 
@@ -83,7 +83,7 @@ class Paynow_PaymentGateway_Model_Observer
             $message->setDateAdded(date("c", time()));
             $message->setTitle($this->_t('New Paynow_PaymentGateway plugin version available'));
             $message->setDescription($this->_t('Installed version: %s, newest version: %s', $currentVersion, $newestVersion));
-            $message->setUrl('https://github.com/movecloser/MoveCloser_Paynow');
+            $message->setUrl('https://github.com/pay-now/paynow-magento');
             $message->setSeverity(Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE);
             $message->save();
         }
