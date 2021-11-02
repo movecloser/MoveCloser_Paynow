@@ -2,7 +2,7 @@
   "name": "paynow/paymentgateway",
   "type": "magento-module",
   "license": "MIT",
-  "homepage": "https://github.com/movecloser/MoveCloser_Paynow",
+  "homepage": "https://github.com/pay-now/paynow-magento",
   "description": "Add support for paynow payment gateway.",
   "require": {
     "php": ">=7.1.0",
